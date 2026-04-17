@@ -2,91 +2,54 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace OOP_Laboratory_V2
+namespace OOP_Laboratory_V3
 {
     class Program
     {
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
-            string filePath = "lab_results_v2.txt";
-            File.WriteAllText(filePath, "========== РЕЗУЛЬТАТИ (ВЕРСІЯ 2: ІНТЕРФЕЙСИ) ==========\n\n");
+            string filePath = "lab_results_v3.txt";
+            File.WriteAllText(filePath, "========== РЕЗУЛЬТАТИ (ВЕРСІЯ 3: АБСТРАКТНИЙ КЛАС) ==========\n\n");
 
-            Console.WriteLine("\n========== ЗАПУСК ВЕРСІЇ 2 (Інтерфейси) ==========\n");
+            Console.WriteLine("\n========== ЗАПУСК ВЕРСІЇ 3 (Абстрактні класи) ==========\n");
 
-            // 1. Демонстрація доступу через посилання на інтерфейс
-            IPublication magPublication = new Magazine("Forbes", "Українська", "Суспільно-політичне", 5, 2024, 120, 15000);
-            IPublication bookPublication = new Book("Захар Беркут", "Українська", "Художнє", "Іван Франко", 2021, 300, 8000);
+            PrintedPublication mag = new Magazine("National Geographic", "Українська", "Наука", 12, 2024, 80, 5000);
+            PrintedPublication book = new Book("Тіні забутих предків", "Українська", "Художнє", "М. Коцюбинський", 2021, 300, 10000);
 
-            // Виклик методів, що є в інтерфейсі (вартість)
-            magPublication.CalculateCost(30m, 40m, 15m, filePath);
-            bookPublication.CalculateCost(45m, 60m, 20m, filePath);
+            // Виклик звичайного методу, який реалізований в абстрактному класі
+            mag.CalculateCost(20.50m, 30.00m, 10.00m, filePath);
+            book.CalculateCost(40.00m, 50.00m, 15.00m, filePath);
 
-            // 2. Доступ до специфічних методів похідних класів (класичне приведення типів)
-            // Ми перевіряємо, чи є об'єкт журналом, і якщо так - перетворюємо його
-            if (magPublication is Magazine)
+
+            // Спільний список для виводу
+            List<PrintedPublication> pubs = new List<PrintedPublication>();
+            pubs.Add(mag);
+            pubs.Add(book);
+
+            foreach (PrintedPublication p in pubs)
             {
-                Magazine mag = (Magazine)magPublication;
-                mag.CalculatePopularityRating(12000, filePath);
+                p.PrintInfo();
             }
 
-            if (bookPublication is Book)
-            {
-                Book book = (Book)bookPublication;
-                book.CalculatePopularityRating(7500, filePath);
-            }
-
-            // Робота зі списком інтерфейсів (Поліморфізм)
-            List<IPublication> allPublications = new List<IPublication>();
-            allPublications.Add(magPublication);
-            allPublications.Add(bookPublication);
-
-            foreach (IPublication pub in allPublications)
-            {
-                pub.PrintInfo();
-            }
-
-            Console.WriteLine("\n[INFO] Результати Версії 2 збережено у: {0}", filePath);
-            Console.ReadLine(); // Зупинка консолі
+            Console.WriteLine("\n[INFO] Результати Версії 3 збережено у: {0}", filePath);
+            Console.ReadLine();
         }
     }
-
-    public interface IPublication
+    // АБСТРАКТНИЙ БАЗОВИЙ КЛАС
+    public abstract class PrintedPublication
     {
-        void PrintInfo();
-        void CalculateCost(decimal paperCost, decimal printingCost, decimal taxes, string path);
-    }
-
-    // Базовий клас реалізує інтерфейс
-    public class PrintedPublication : IPublication
-    {
-        // Класичні закриті поля
         private string _title;
         private decimal _cost;
         private string _language;
         private string _purpose;
+        private double _rating;
 
-        // Класичні властивості
-        public string Title
-        {
-            get { return _title; }
-            set { _title = value; }
-        }
-        public decimal Cost
-        {
-            get { return _cost; }
-            set { _cost = value; }
-        }
-        public string Language
-        {
-            get { return _language; }
-            set { _language = value; }
-        }
-        public string Purpose
-        {
-            get { return _purpose; }
-            set { _purpose = value; }
-        }
+        public string Title { get { return _title; } set { _title = value; } }
+        public decimal Cost { get { return _cost; } set { _cost = value; } }
+        public string Language { get { return _language; } set { _language = value; } }
+        public string Purpose { get { return _purpose; } set { _purpose = value; } }
+        public double Rating { get { return _rating; } set { _rating = value; } }
 
         public PrintedPublication(string title, string language, string purpose)
         {
@@ -94,103 +57,96 @@ namespace OOP_Laboratory_V2
             _language = language;
             _purpose = purpose;
             _cost = 0;
+            _rating = 0;
         }
 
+        // Звичайний метод
+        public void CalculateCost(decimal paper, decimal print, decimal tax, string path)
+        {
+            Cost = paper + print + tax;
+            string log = string.Format("[V3 COST] {0}: {1} грн\n", Title, Cost);
+            File.AppendAllText(path, log);
+        }
+
+        // Віртуальний метод
         public virtual void PrintInfo()
         {
-            Console.WriteLine("Назва: {0} | Вартість: {1} грн | Мова: {2}", Title, Cost, Language);
+            Console.WriteLine("Видання: {0} | Мова: {1} | Ціна: {2} грн", Title, Language, Cost);
         }
 
-        public void CalculateCost(decimal paperCost, decimal printingCost, decimal taxes, string path)
-        {
-            Cost = paperCost + printingCost + taxes;
-            string logEntry = string.Format("[V2 COST] {0}: {1} грн\n", Title, Cost);
-            File.AppendAllText(path, logEntry);
-        }
+        // АБСТРАКТНИЙ МЕТОД: не має тіла. 
+        public abstract void CalculatePopularityRating(int sales, string path);
     }
 
-    // Похідний клас Журнал
+
+    // Похідний клас: Журнал
     public class Magazine : PrintedPublication
     {
         private int _magazineNumber;
         private int _releaseYear;
         private int _pagesCount;
         private int _circulation;
-        private double _popularityRating;
 
-        public int MagazineNumber { get { return _magazineNumber; } set { _magazineNumber = value; } }
-        public int ReleaseYear { get { return _releaseYear; } set { _releaseYear = value; } }
-        public int PagesCount { get { return _pagesCount; } set { _pagesCount = value; } }
-        public int Circulation { get { return _circulation; } set { _circulation = value; } }
-        public double PopularityRating { get { return _popularityRating; } set { _popularityRating = value; } }
-
-        public Magazine(string title, string language, string purpose, int magazineNumber, int releaseYear, int pagesCount, int circulation)
-            : base(title, language, purpose)
+        public Magazine(string t, string l, string p, int num, int year, int pages, int circ)
+            : base(t, l, p)
         {
-            _magazineNumber = magazineNumber;
-            _releaseYear = releaseYear;
-            _pagesCount = pagesCount;
-            _circulation = circulation;
-            _popularityRating = 0;
+            _magazineNumber = num;
+            _releaseYear = year;
+            _pagesCount = pages;
+            _circulation = circ;
         }
 
         public override void PrintInfo()
         {
             base.PrintInfo();
-            Console.WriteLine("   -> Журнал №{0} (Рік: {1}, Стор: {2}) | Рейтинг: {3}%\n",
-                              MagazineNumber, ReleaseYear, PagesCount, PopularityRating);
+            Console.WriteLine("   -> ЖУРНАЛ №{0} | Наклад: {1} | Рейтинг: {2}%\n",
+                              _magazineNumber, _circulation, Rating);
         }
 
-        public void CalculatePopularityRating(int totalSales, string path)
+        // Реалізація абстрактного методу для журналу
+        public override void CalculatePopularityRating(int sales, string path)
         {
-            if (Circulation > 0)
+            if (_circulation > 0)
             {
-                PopularityRating = Math.Round((double)totalSales / Circulation * 100, 2);
-                string logEntry = string.Format("[V2 POPULARITY] Журнал {0}: {1}%\n", Title, PopularityRating);
-                File.AppendAllText(path, logEntry);
+                Rating = Math.Round((double)sales / _circulation * 100, 2);
+                string log = string.Format("[V3 POPULARITY] Журнал {0}: {1}%\n", Title, Rating);
+                File.AppendAllText(path, log);
             }
         }
     }
 
-    // Похідний клас Книга
+
+    // ПОХІДНИЙ КЛАС: КНИГА
     public class Book : PrintedPublication
     {
         private string _author;
         private int _releaseYear;
         private int _pagesCount;
         private int _circulation;
-        private double _popularityRating;
 
-        public string Author { get { return _author; } set { _author = value; } }
-        public int ReleaseYear { get { return _releaseYear; } set { _releaseYear = value; } }
-        public int PagesCount { get { return _pagesCount; } set { _pagesCount = value; } }
-        public int Circulation { get { return _circulation; } set { _circulation = value; } }
-        public double PopularityRating { get { return _popularityRating; } set { _popularityRating = value; } }
-
-        public Book(string title, string language, string purpose, string author, int releaseYear, int pagesCount, int circulation)
-            : base(title, language, purpose)
+        public Book(string t, string l, string p, string a, int year, int pages, int circ)
+            : base(t, l, p)
         {
-            _author = author;
-            _releaseYear = releaseYear;
-            _pagesCount = pagesCount;
-            _circulation = circulation;
-            _popularityRating = 0;
+            _author = a;
+            _releaseYear = year;
+            _pagesCount = pages;
+            _circulation = circ;
         }
 
         public override void PrintInfo()
         {
             base.PrintInfo();
-            Console.WriteLine("   -> Автор: {0} (Рік: {1}, Стор: {2}) | Рейтинг: {3}%\n",
-                              Author, ReleaseYear, PagesCount, PopularityRating);
+            Console.WriteLine("   -> КНИГА. Автор: {0} | Рік: {1} | Рейтинг: {2}%\n", _author, _releaseYear, Rating);
         }
 
-        public void CalculatePopularityRating(int totalSales, string path)
+        // Реалізація абстрактного методу для книги
+        public override void CalculatePopularityRating(int sales, string path)
         {
-            if (Circulation > 0)
+            if (_circulation > 0)
             {
-                PopularityRating = Math.Round((double)totalSales / Circulation * 100, 2);
-                string logEntry = string.Format("[V2 POPULARITY] Книга {0}: {1}%\n", Title, PopularityRating);
-                File.AppendAllText(path, logEntry);
+                Rating = Math.Round((double)sales / _circulation * 100, 2);
+                string log = string.Format("[V3 POPULARITY] Книга {0}: {1}%\n", Title, Rating);
+                File.AppendAllText(path, log);
             }
         }
     }
