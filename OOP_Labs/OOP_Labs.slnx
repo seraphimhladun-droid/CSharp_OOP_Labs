@@ -1,1 +1,5 @@
-<Solution />
+<Solution>
+  <Project Path="Lab.5/Lab.5.csproj" />
+  <Project Path="Lab4_Task1/Lab4_Task1.csproj" />
+  <Project Path="Lab6/Lab6.csproj" Id="eede2603-d855-425c-b62d-7f5a3e3b5865" />
+</Solution>
