@@ -6,7 +6,7 @@ namespace Lab6
     {
         static void Main(string[] args)
         {
-            // Налаштування кодування для коректного відображення української мови
+           
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
             Console.WriteLine("=== ТЕСТУВАННЯ РОЗУМНОГО ТЕЛЕВІЗОРА (Лабораторна №6) ===\n");
@@ -17,15 +17,12 @@ namespace Lab6
             // 2. СТВОРЕННЯ ГОЛОВНОГО ПРИСТРОЮ (Спадкування)
             SmartVisualAssistant jarvis = new SmartVisualAssistant("Джарвіс");
 
-            // 3. ПІДПИСКА НА ПОДІЇ (Пункт 5 завдання)
-            // Ми кажемо: "Коли станеться подія, виклич ці методи"
             jarvis.OnAppStarted += MessageSystem_Notification;
             jarvis.OnSystemError += ServiceCenter_Alert;
 
             // 4. ВЗАЄМОДІЯ (Агрегація)
             jarvis.SyncWithSmartphone(myIPhone);
 
-            // 5. ОСНОВНИЙ БЛОК ОБРОБКИ (Пункт 4 завдання)
             try
             {
                 jarvis.TurnOn(); // Поліморфізм у дії

@@ -2,8 +2,7 @@
 
 namespace Lab6
 {
-    // 1. ОГОЛОШЕННЯ ДЕЛЕГАТА (Пункт 5 завдання)
-    // Це шаблон для методів, які будуть "слухати" події телевізора
+    // 1. ОГОЛОШЕННЯ ДЕЛЕГАТА 
     public delegate void SmartTVHandler(string message);
 
     public class SmartTV

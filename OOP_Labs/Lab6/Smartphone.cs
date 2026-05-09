@@ -4,7 +4,6 @@ namespace Lab6
 {
     public class Smartphone
     {
-        // 1. ЗАКРИТІ ПОЛЯ
         private string _brand;
         private int _batteryLevel;
         private bool _isConnectedToTV;

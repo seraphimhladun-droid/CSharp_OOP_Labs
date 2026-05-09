@@ -10,8 +10,6 @@ namespace Lab6
         private bool _isHologramActive;
 
         // 2. КОНСТРУКТОР
-        // Ключове слово base() автоматично викликає конструктор базового класу SmartTV.
-        // Тобто: спочатку "збирається" звичайний ТВ (екран + процесор), а потім додаються фішки помічника.
         public SmartVisualAssistant(string assistantName) : base()
         {
             _assistantName = assistantName;
@@ -20,7 +18,6 @@ namespace Lab6
         }
 
         // 3. ПОЛІМОРФІЗМ (Перевизначення віртуального методу)
-        // Ми беремо стандартний метод TurnOn() з SmartTV і робимо його крутішим
         public override void TurnOn()
         {
             base.TurnOn(); // Спочатку відпрацьовує стандартне ввімкнення екрану
@@ -43,8 +40,7 @@ namespace Lab6
             else if (lowerCommand.Contains("фільм") || lowerCommand.Contains("відео"))
             {
                 Console.WriteLine($"[{_assistantName}] Зрозумів. Запускаю додаток...");
-                // Зверни увагу: ми викликаємо LaunchApp, хоча не писали його в цьому файлі!
-                // Він дістався нам у спадок від SmartTV.
+               
                 LaunchApp("Netflix");
             }
             else
@@ -57,7 +53,7 @@ namespace Lab6
         private void ActivateHologram()
         {
             _isHologramActive = true;
-            Console.WriteLine($"[{_assistantName}] УВАГА: Проектую об'ємну 3D-голограму посеред кімнати! 🌐");
+            Console.WriteLine($"[{_assistantName}] УВАГА: Проектую об'ємну 3D-голограму посеред кімнати! ");
         }
     }
 }

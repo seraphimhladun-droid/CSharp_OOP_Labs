@@ -4,16 +4,12 @@ namespace Lab6
 {
     public class Screen
     {
-        // 1. ЗАКРИТІ ПОЛЯ (Інкапсуляція)
-        // Ніхто ззовні не може випадково зламати екран або змінити його стан напряму
         private string _resolution;
         private bool _isTurnedOn;
 
-        // 2. ВІДКРИТІ ВЛАСТИВОСТІ (Аксесори)
         public string Resolution
         {
             get { return _resolution; }
-            // private set означає, що роздільну здатність можна задати лише при створенні екрану
             private set { _resolution = value; }
         }
 
@@ -22,7 +18,6 @@ namespace Lab6
             get { return _isTurnedOn; }
         }
 
-        // Конструктор (викликається, коли на заводі створюють цей екран)
         public Screen(string resolution)
         {
             Resolution = resolution;
