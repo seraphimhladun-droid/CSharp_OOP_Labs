@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 
 namespace CourseProject_SmartManager
 {
@@ -8,38 +7,43 @@ namespace CourseProject_SmartManager
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
-            Console.WriteLine("ПІБ студента:Гладун Серафим Сергійович");
-            Console.WriteLine("Курс: 1, Група:ІПЗ-12");
+            Console.WriteLine("ПІБ студента: Гладун Серафим Сергійович");
+            Console.WriteLine("Курс: 1, Група: ІПЗ-12");
             Console.WriteLine("Варіант завдання: 25 (Smart Manager)");
-            Console.WriteLine("Версія 1");
-            Console.WriteLine("Старт імітації");
+            Console.WriteLine("Версія 2: Конструктори та аксесори класів");
             Console.WriteLine("=====================================\n");
 
-            // 2. Створення об'єктів (перевірка, що класи працюють)
-            Manager mainManager = new Manager();
-            mainManager.FullName = "Олександр Іваненко";
-            mainManager.Department = "IT Відділ";
+            Console.WriteLine("--- ПРОТОКОЛ РОБОТИ КОНСТРУКТОРІВ ТА ЗВ'ЯЗКІВ ---\n");
 
-            SmartProject newProject = new SmartProject();
-            newProject.ProjectName = "Впровадження електронних черг";
+            // 1. Створюємо менеджера 
+            Manager mainManager = new Manager("Олександр Іваненко");
 
-            Task task1 = new Task();
-            task1.Title = "Написати ТЗ для серверної частини";
+            // 2. Демонстрація статичного конструктора та ініціалізації Task
+            Task task1 = new Task("Налаштувати сервери", "Високий");
 
-            Document doc1 = new Document();
-            doc1.Name = "Договір з підрядником";
+            // 3. Демонстрація КОНСТРУКТОРА КОПІЙ
+            Task task2_duplicate = new Task(task1);
 
-            // 3. Імітація роботи
-            Console.WriteLine($"[Система]: Створено менеджера - {mainManager.FullName}");
-            Console.WriteLine($"[Система]: Створено новий проєкт - '{newProject.ProjectName}'");
-            Console.WriteLine($"[Система]: Додано завдання '{task1.Title}'");
-            Console.WriteLine($"[Система]: Завантажено документ '{doc1.Name}'");
+            // 4. Створюємо проєкт (тут спрацює private конструктор + композиція)
+            Console.WriteLine();
+            SmartProject webProject = new SmartProject("Впровадження електронних черг");
 
-            // Фініш
+            // 5. АГРЕГАЦІЯ: Передаємо проєкт менеджеру
+            mainManager.AssignProject(webProject);
+
+            // 6. Демонстрація конструкторів Document
+            Console.WriteLine();
+            Document doc1 = new Document(); // без параметрів
+            Document doc2 = new Document("Договір NDA", "Затверджено"); // :this(name)
+
+            // 7. Перевірка властивостей (аксесорів)
+            Console.WriteLine("\n--- ПЕРЕВІРКА ВЛАСТИВОСТЕЙ (АКСЕСОРІВ) ---");
+            Task badTask = new Task("", "Низький"); // Передаємо порожній рядок
+            Console.WriteLine($"Спроба створити завдання без назви. Результат роботи set-аксесора: '{badTask.Title}'");
+
             Console.WriteLine("\n=====================================");
             Console.WriteLine("Фініш імітації");
-
-            Console.ReadLine(); // Щоб консоль не закривалась
+            Console.ReadLine();
         }
     }
 }
