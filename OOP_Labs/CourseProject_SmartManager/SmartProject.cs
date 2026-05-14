@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq; // Потрібно для зручної роботи зі списками
 
 namespace CourseProject_SmartManager
 {
@@ -10,22 +11,43 @@ namespace CourseProject_SmartManager
         public List<Task> ProjectTasks { get; private set; }
         public List<Document> ProjectDocuments { get; private set; }
 
-        // Закритий (private) конструктор.
         private SmartProject()
         {
             ProjectTasks = new List<Task>();
             ProjectDocuments = new List<Document>();
-
-            // Взаємозв'язок КОМПОЗИЦІЯ: Проєкт під час створення одразу створює собі базове завдання
-            ProjectTasks.Add(new Task("Організаційна зустріч по проєкту", "Високий"));
-            Console.WriteLine("[Private Конструктор SmartProject]: Виділено пам'ять для списків та створено перше системне завдання (Композиція).");
         }
 
-        // Публічний конструктор, який звертається до закритого через : this()
         public SmartProject(string name) : this()
         {
             ProjectName = name;
-            Console.WriteLine($"[Конструктор SmartProject]: Проєкт '{ProjectName}' успішно ініціалізовано.");
+        }
+
+        // ================= ВЕРСІЯ 3 =================
+
+        // Методи додавання (заповнення контейнерів)
+        public void AddTask(Task newTask)
+        {
+            ProjectTasks.Add(newTask);
+            Console.WriteLine($"[Проєкт '{ProjectName}']: Додано нове завдання '{newTask.Title}'.");
+        }
+
+        public void AddDocument(Document newDoc)
+        {
+            ProjectDocuments.Add(newDoc);
+            Console.WriteLine($"[Проєкт '{ProjectName}']: Прикріплено документ '{newDoc.Name}'.");
+        }
+
+        // Предикатна функція: перевіряє, чи можна здавати проєкт
+        public bool IsReadyForRelease()
+        {
+            // Перевіряємо, чи є хоча б одне невиконане завдання
+            bool hasUnfinishedTasks = ProjectTasks.Any(t => !t.IsDone());
+
+            // Перевіряємо, чи є хоча б один незатверджений документ
+            bool hasUnapprovedDocs = ProjectDocuments.Any(d => !d.IsApproved());
+
+            // Проєкт готовий (true), якщо немає невиконаних завдань і немає незатверджених документів
+            return !hasUnfinishedTasks && !hasUnapprovedDocs;
         }
     }
 }

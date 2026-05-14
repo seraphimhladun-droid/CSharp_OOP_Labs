@@ -12,14 +12,28 @@ namespace CourseProject_SmartManager
         {
             FullName = fullName;
             ManagedProjects = new List<SmartProject>();
-            Console.WriteLine($"[Конструктор Manager]: Прийнято на роботу менеджера: {FullName}.");
         }
 
-        // Взаємозв'язок АГРЕГАЦІЯ: Менеджер отримує готовий проєкт ззовні
         public void AssignProject(SmartProject existingProject)
         {
             ManagedProjects.Add(existingProject);
-            Console.WriteLine($"[Агрегація]: Менеджеру {FullName} доручено керувати проєктом '{existingProject.ProjectName}'.");
+        }
+
+        // ================= ВЕРСІЯ 3 =================
+
+        // Предикатна функція: перевіряє навантаження на менеджера
+        public bool IsOverloaded()
+        {
+            // Якщо у менеджера більше 3 проєктів, він перевантажений
+            return ManagedProjects.Count > 3;
+        }
+
+        // Метод звітності
+        public void PrintDashboard()
+        {
+            Console.WriteLine($"\n--- ДАШБОРД МЕНЕДЖЕРА: {FullName} ---");
+            Console.WriteLine($"Кількість активних проєктів: {ManagedProjects.Count}");
+            Console.WriteLine($"Стан перевантаження: {(IsOverloaded() ? "ТАК (Потрібен асистент)" : "НІ (Робота в нормі)")}");
         }
     }
 }

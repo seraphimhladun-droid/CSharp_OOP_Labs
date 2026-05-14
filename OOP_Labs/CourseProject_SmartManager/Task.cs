@@ -4,10 +4,8 @@ namespace CourseProject_SmartManager
 {
     public class Task
     {
-        
         private string _title;
 
-        //  Властивість читання та запису 
         public string Title
         {
             get { return _title; }
@@ -21,27 +19,37 @@ namespace CourseProject_SmartManager
         }
 
         public string Priority { get; set; }
+        public bool IsCompleted { get; private set; } // Нова властивість для статусу
 
-        //  Статичний конструктор
-        static Task()
-        {
-            Console.WriteLine(">>> [СТАТИЧНИЙ КОНСТРУКТОР]: Систему завдань Smart Manager ініціалізовано. <<<");
-        }
+        static Task() { }
 
-        // Конструктор ініціалізації
         public Task(string title, string priority)
         {
-            Title = title; // Викликається set-аксесор
+            Title = title;
             Priority = priority;
-            Console.WriteLine($"[Конструктор Task]: Створено завдання '{Title}' (Пріоритет: {Priority}).");
+            IsCompleted = false; // За замовчуванням нове завдання не виконане
         }
 
-        // Конструктор копій
         public Task(Task previousTask)
         {
             this.Title = previousTask.Title + " (Копія)";
             this.Priority = previousTask.Priority;
-            Console.WriteLine($"[Конструктор Task]: Створено КОПІЮ завдання '{this.Title}'.");
+            this.IsCompleted = false;
+        }
+
+        // ================= ВЕРСІЯ 3 =================
+
+        // Метод дії
+        public void CompleteTask()
+        {
+            IsCompleted = true;
+            Console.WriteLine($"[Завдання]: Роботу над '{Title}' завершено!");
+        }
+
+        // Предикатна функція
+        public bool IsDone()
+        {
+            return IsCompleted;
         }
     }
 }

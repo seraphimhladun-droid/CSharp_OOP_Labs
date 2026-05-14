@@ -10,36 +10,46 @@ namespace CourseProject_SmartManager
             Console.WriteLine("ПІБ студента: Гладун Серафим Сергійович");
             Console.WriteLine("Курс: 1, Група: ІПЗ-12");
             Console.WriteLine("Варіант завдання: 25 (Smart Manager)");
-            Console.WriteLine("Версія 2: Конструктори та аксесори класів");
+            Console.WriteLine("Версія 3: Робота методів та предикатні функції");
             Console.WriteLine("=====================================\n");
 
-            Console.WriteLine("--- ПРОТОКОЛ РОБОТИ КОНСТРУКТОРІВ ТА ЗВ'ЯЗКІВ ---\n");
-
-            // 1. Створюємо менеджера 
+            // --- БАЗОВА ІНІЦІАЛІЗАЦІЯ ---
             Manager mainManager = new Manager("Олександр Іваненко");
-
-            // 2. Демонстрація статичного конструктора та ініціалізації Task
-            Task task1 = new Task("Налаштувати сервери", "Високий");
-
-            // 3. Демонстрація КОНСТРУКТОРА КОПІЙ
-            Task task2_duplicate = new Task(task1);
-
-            // 4. Створюємо проєкт (тут спрацює private конструктор + композиція)
-            Console.WriteLine();
             SmartProject webProject = new SmartProject("Впровадження електронних черг");
-
-            // 5. АГРЕГАЦІЯ: Передаємо проєкт менеджеру
             mainManager.AssignProject(webProject);
 
-            // 6. Демонстрація конструкторів Document
-            Console.WriteLine();
-            Document doc1 = new Document(); // без параметрів
-            Document doc2 = new Document("Договір NDA", "Затверджено"); // :this(name)
+            Console.WriteLine("\n--- ВЕРСІЯ 3: СЦЕНАРІЙ РОБОТИ ---");
 
-            // 7. Перевірка властивостей (аксесорів)
-            Console.WriteLine("\n--- ПЕРЕВІРКА ВЛАСТИВОСТЕЙ (АКСЕСОРІВ) ---");
-            Task badTask = new Task("", "Низький"); // Передаємо порожній рядок
-            Console.WriteLine($"Спроба створити завдання без назви. Результат роботи set-аксесора: '{badTask.Title}'");
+            // 1. Створюємо елементи
+            Task frontendTask = new Task("Зробити дизайн сайту", "Високий");
+            Task backendTask = new Task("Написати API", "Критичний");
+            Document tzDoc = new Document("Технічне завдання");
+
+            // 2. Додаємо їх у проєкт
+            webProject.AddTask(frontendTask);
+            webProject.AddTask(backendTask);
+            webProject.AddDocument(tzDoc);
+
+            // 3. Використовуємо предикат для перевірки стану
+            Console.WriteLine($"\n[Система]: Перевірка готовності проєкту...");
+            Console.WriteLine($"Чи готовий проєкт до здачі? -> {webProject.IsReadyForRelease()}");
+
+            // 4. Виконуємо роботу (викликаємо методи)
+            Console.WriteLine("\n[Система]: Менеджер починає виконувати задачі...");
+            frontendTask.CompleteTask();
+            backendTask.CompleteTask();
+            tzDoc.ApproveDocument();
+
+            // 5. Знову перевіряємо предикат
+            Console.WriteLine($"\n[Система]: Фінальна перевірка готовності...");
+            Console.WriteLine($"Чи готовий проєкт до здачі? -> {webProject.IsReadyForRelease()}");
+            if (webProject.IsReadyForRelease())
+            {
+                Console.WriteLine("Ура! Проєкт успішно завершено.");
+            }
+
+            // 6. Демонстрація методу і предиката Менеджера
+            mainManager.PrintDashboard();
 
             Console.WriteLine("\n=====================================");
             Console.WriteLine("Фініш імітації");
