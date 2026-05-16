@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO; //  Підключаємо бібліотеку для роботи з файлами
 
 namespace CourseProject_SmartManager
 {
@@ -6,11 +8,13 @@ namespace CourseProject_SmartManager
     {
         static void Main(string[] args)
         {
+            // Налаштування консолі для правильного відображення української мови
             Console.OutputEncoding = System.Text.Encoding.UTF8;
+
             Console.WriteLine("ПІБ студента: Гладун Серафим Сергійович");
             Console.WriteLine("Курс: 1, Група: ІПЗ-12");
             Console.WriteLine("Варіант завдання: 25 (Smart Manager)");
-            Console.WriteLine("Версія 3: Робота методів та предикатні функції");
+            Console.WriteLine("Версія 4: Перевантаження операторів та робота з файлами");
             Console.WriteLine("=====================================\n");
 
             // --- БАЗОВА ІНІЦІАЛІЗАЦІЯ ---
@@ -18,38 +22,41 @@ namespace CourseProject_SmartManager
             SmartProject webProject = new SmartProject("Впровадження електронних черг");
             mainManager.AssignProject(webProject);
 
-            Console.WriteLine("\n--- ВЕРСІЯ 3: СЦЕНАРІЙ РОБОТИ ---");
+            Console.WriteLine("\n--- ВЕРСІЯ 4: ЗЧИТУВАННЯ ДАНИХ З ФАЙЛУ ---");
 
-            // 1. Створюємо елементи
-            Task frontendTask = new Task("Зробити дизайн сайту", "Високий");
-            Task backendTask = new Task("Написати API", "Критичний");
-            Document tzDoc = new Document("Технічне завдання");
+            // Вказуємо назву нашого файлу
+            string filePath = "tasks.txt.txt";
 
-            // 2. Додаємо їх у проєкт
-            webProject.AddTask(frontendTask);
-            webProject.AddTask(backendTask);
-            webProject.AddDocument(tzDoc);
-
-            // 3. Використовуємо предикат для перевірки стану
-            Console.WriteLine($"\n[Система]: Перевірка готовності проєкту...");
-            Console.WriteLine($"Чи готовий проєкт до здачі? -> {webProject.IsReadyForRelease()}");
-
-            // 4. Виконуємо роботу (викликаємо методи)
-            Console.WriteLine("\n[Система]: Менеджер починає виконувати задачі...");
-            frontendTask.CompleteTask();
-            backendTask.CompleteTask();
-            tzDoc.ApproveDocument();
-
-            // 5. Знову перевіряємо предикат
-            Console.WriteLine($"\n[Система]: Фінальна перевірка готовності...");
-            Console.WriteLine($"Чи готовий проєкт до здачі? -> {webProject.IsReadyForRelease()}");
-            if (webProject.IsReadyForRelease())
+            // Перевіряємо, чи існує файл у папці з програмою
+            if (File.Exists(filePath))
             {
-                Console.WriteLine("Ура! Проєкт успішно завершено.");
-            }
+                // Зчитуємо всі рядки з файлу в масив
+                string[] fileLines = File.ReadAllLines(filePath);
+                Console.WriteLine($"[Файлова система]: Знайдено файл '{filePath}'. Зчитано рядків: {fileLines.Length}\n");
 
-            // 6. Демонстрація методу і предиката Менеджера
-            mainManager.PrintDashboard();
+                // Проходимося циклом по кожному зчитаному рядку
+                foreach (string line in fileLines)
+                {
+                    // Розбиваємо рядок на частини за символом '|'
+                    string[] parts = line.Split('|');
+
+                    // Перевіряємо, чи правильно розбився рядок (має бути 2 частини: Назва і Пріоритет)
+                    if (parts.Length == 2)
+                    {
+                        string taskTitle = parts[0];
+                        string taskPriority = parts[1];
+
+                        // Створюємо нове завдання з цих даних і додаємо в проєкт
+                        Task loadedTask = new Task(taskTitle, taskPriority);
+                        webProject.AddTask(loadedTask);
+                    }
+                }
+            }
+            else
+            {
+                // Якщо файл не знайдено (наприклад, забули поставити Copy if newer)
+                Console.WriteLine($"[Помилка]: Файл '{filePath}' не знайдено! Перевірте налаштування Properties.");
+            }
 
             Console.WriteLine("\n=====================================");
             Console.WriteLine("Фініш імітації");

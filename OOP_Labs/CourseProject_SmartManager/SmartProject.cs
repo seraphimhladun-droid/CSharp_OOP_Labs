@@ -28,7 +28,7 @@ namespace CourseProject_SmartManager
         public void AddTask(Task newTask)
         {
             ProjectTasks.Add(newTask);
-            Console.WriteLine($"[Проєкт '{ProjectName}']: Додано нове завдання '{newTask.Title}'.");
+            Console.WriteLine($"[Проєкт '{ProjectName}']: Додано завдання '{newTask.Title}' [Пріоритет: {newTask.Priority}]");
         }
 
         public void AddDocument(Document newDoc)
