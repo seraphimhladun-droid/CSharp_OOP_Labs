@@ -2,7 +2,16 @@
 
 namespace CourseProject_SmartManager
 {
-    public class Task
+    public interface IPrintable
+    {
+        void PrintInfo(); // Контракт: будь-який клас, що підпишеться на нас, зобов'язаний мати цей метод
+    }
+    public interface ICompletable
+    {
+        void CompleteTask();
+        bool IsDone();
+    }
+    public class Task : IPrintable, ICompletable
     {
         public string Title { get; set; }
         public string Priority { get; set; }
@@ -24,6 +33,12 @@ namespace CourseProject_SmartManager
         public bool IsDone() // Предикатна функція
         {
             return IsCompleted;
+        }
+        public void PrintInfo()
+        {
+            // Використовуємо тернарний оператор , щоб красиво показати статус
+            string status = IsCompleted ? "[Виконано]" : "[В процесі]";
+            Console.WriteLine($"{status} Завдання: '{Title}' | Пріоритет: {Priority} | Годин: {EstimatedHours}");
         }
 
         // ================= Перевантаження унарних операторів =================
