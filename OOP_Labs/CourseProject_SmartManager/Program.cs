@@ -14,7 +14,7 @@ namespace CourseProject_SmartManager
             Console.WriteLine("ПІБ студента: Гладун Серафим Сергійович");
             Console.WriteLine("Курс: 1, Група: ІПЗ-12");
             Console.WriteLine("Варіант завдання: 25 (Smart Manager)");
-            Console.WriteLine("Версія 4: Перевантаження операторів та робота з файлами");
+            Console.WriteLine("Версія 5: Спадкування, інтерфейси та поліморфізм (Повна версія)");
             Console.WriteLine("=====================================\n");
 
             // --- БАЗОВА ІНІЦІАЛІЗАЦІЯ ---
@@ -22,7 +22,7 @@ namespace CourseProject_SmartManager
             SmartProject webProject = new SmartProject("Впровадження електронних черг");
             mainManager.AssignProject(webProject);
 
-            Console.WriteLine("\n--- ВЕРСІЯ 4: ЗЧИТУВАННЯ ДАНИХ З ФАЙЛУ ---");
+            Console.WriteLine("\n--- ВЕРСІЯ 5: ЗЧИТУВАННЯ ДАНИХ З ФАЙЛУ ---");
 
             // Вказуємо назву нашого файлу
             string filePath = "tasks.txt.txt";
@@ -46,8 +46,8 @@ namespace CourseProject_SmartManager
                         string taskTitle = parts[0];
                         string taskPriority = parts[1];
 
-                        // Створюємо нове завдання з цих даних і додаємо в проєкт
-                        Task loadedTask = new Task(taskTitle, taskPriority);
+                        // Модифікація В5: Оскільки просто Task створити не можна, робимо зчитані завдання рутинними
+                        RoutineTask loadedTask = new RoutineTask(taskTitle, taskPriority, "За запитом");
                         webProject.AddTask(loadedTask);
                     }
                 }
@@ -58,12 +58,14 @@ namespace CourseProject_SmartManager
                 Console.WriteLine($"[Помилка]: Файл '{filePath}' не знайдено! Перевірте налаштування Properties.");
             }
 
-            // --- ТЕСТУВАННЯ БІНАРНИХ ОПЕРАТОРІВ ТА ПОРІВНЯННЯ ---
+            // --- ТЕСТУВАННЯ БІНАРНИХ ОПЕРАТОРІВ ТА ПОРІВНЯННЯ (ЗБЕРЕЖЕНО З ВЕРСІЇ 4) ---
             Console.WriteLine("\n--- ТЕСТУВАННЯ БІНАРНИХ ОПЕРАТОРІВ (+, -) ---");
-            Task taskA = new Task("Написати код", "Високий");
-            Task taskB = new Task("Протестувати код", "Середній");
 
-            // додаємо години прямо до об'єкта через математичний плюс!
+            // Модифікація В5: Оголошуємо змінні як Task, але ініціалізуємо як UrgentTask та RoutineTask
+            Task taskA = new UrgentTask("Написати код", "Високий", DateTime.Now.AddDays(5));
+            Task taskB = new RoutineTask("Протестувати код", "Середній", "Щодня");
+
+            // Твій оригінальний код тестування працює ідеально!
             taskA = taskA + 5; // Виділяємо 5 годин
             taskB = taskB + 2; // Виділяємо 2 години
             Console.WriteLine($"Завдання '{taskA.Title}' займе {taskA.EstimatedHours} годин.");
@@ -89,11 +91,36 @@ namespace CourseProject_SmartManager
             }
 
             // Перевіряємо рівність
-            Task taskC = new Task("Написати код", "Високий");
+            Task taskC = new UrgentTask("Написати код", "Високий", DateTime.Now.AddDays(5));
             if (taskA == taskC)
             {
                 Console.WriteLine($"Завдання taskA та taskC ІДЕНТИЧНІ за назвою і пріоритетом. (Спрацював оператор ==)");
             }
+
+            // Додаємо ці створені завдання до нашого списку в проєкті, щоб вони теж там були
+            webProject.AddTask(taskA);
+            webProject.AddTask(taskB);
+
+
+            // =====================================================================
+            // ДЕМОНСТРАЦІЯ СПЕЦИФІЧНИХ МЕТОДІВ ТА ПОЛІМОРФІЗМУ
+            // =====================================================================
+            Console.WriteLine("\n--- НОВИЙ БЛОК ВЕРСІЇ 5: СПЕЦИФІЧНІ МЕТОДИ (Product Owner) ---");
+
+            // Викликаємо метод DaysLeft(). Оскільки taskA лежить у змінній типу Task, 
+            // ми явно кажемо компілятору, що це насправді UrgentTask (робимо приведення типів)
+            int daysLeft = ((UrgentTask)taskA).DaysLeft();
+            Console.WriteLine($"[Специфічний метод]: До дедлайну завдання '{taskA.Title}' залишилось днів: {daysLeft}");
+
+
+            Console.WriteLine("\n--- НОВИЙ БЛОК ВЕРСІЇ 5: ПОЛІМОРФІЗМ ТА ІНТЕРФЕЙС IPrintable ---");
+            Console.WriteLine("Виводимо повний список усіх завдань проєкту через поліморфний метод PrintInfo():\n");
+
+            foreach (Task t in webProject.ProjectTasks)
+            {
+                t.PrintInfo(); // Кожен об'єкт сам знає, як себе надрукувати!
+            }
+
 
             // =========================================================
             // ФІНАЛЬНА ЗУПИНКА ПРОГРАМИ 
