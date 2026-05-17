@@ -26,7 +26,7 @@ namespace CourseProject_SmartManager
             return IsCompleted;
         }
 
-        //  Перевантаження унарних операторів =================
+        // ================= Перевантаження унарних операторів =================
 
         // 1. Оператор ++ (Інкремент) Працює як "штамп ВИКОНАНО"
         public static Task operator ++(Task t)
@@ -58,9 +58,25 @@ namespace CourseProject_SmartManager
         {
             return t.IsCompleted == false;
         }
+
+        // 4. Унарні плюс (+) та мінус (-) [Додано за вимогами]
+        public static Task operator +(Task t)
+        {
+            // Унарний плюс зазвичай нічого не змінює, просто повертає об'єкт
+            return t;
+        }
+
+        public static Task operator -(Task t)
+        {
+            // Нехай унарний мінус "обнуляє" час виконання завдання
+            t.EstimatedHours = 0;
+            return t;
+        }
+
+
         // ================= ВЕРСІЯ 4: Бінарні оператори та Порівняння =================
 
-        // 1. Бінарні оператори (+ та -)
+        // 1. Бінарні оператори (+, -, *, /)
         // Дозволяють додавати або віднімати години роботи для завдання
         public static Task operator +(Task t, int hours)
         {
@@ -74,6 +90,24 @@ namespace CourseProject_SmartManager
             if (t.EstimatedHours < 0) t.EstimatedHours = 0; // Захист: час не може бути від'ємним
             return t;
         }
+
+        // Бінарне множення (*) 
+        public static Task operator *(Task t, int multiplier)
+        {
+            t.EstimatedHours *= multiplier;
+            return t;
+        }
+
+        // Бінарне ділення (/) 
+        public static Task operator /(Task t, int divider)
+        {
+            if (divider != 0)
+            {
+                t.EstimatedHours /= divider;
+            }
+            return t;
+        }
+
 
         // 2. Оператори порівняння розміру (>, <, >=, <=)
         // Порівнюємо завдання за тим, скільки годин вони займають
@@ -97,6 +131,7 @@ namespace CourseProject_SmartManager
             return t1.EstimatedHours <= t2.EstimatedHours;
         }
 
+
         // 3. Оператори рівності (== та !=)
         // Вважаємо завдання однаковими, якщо в них збігаються назва та пріоритет
         public static bool operator ==(Task t1, Task t2)
@@ -113,7 +148,6 @@ namespace CourseProject_SmartManager
             return !(t1 == t2);
         }
 
-        // C# вимагає обов'язково додати ці два методи, якщо ми перевантажили == та !=
         public override bool Equals(object obj)
         {
             return obj is Task task && this == task;
@@ -124,5 +158,4 @@ namespace CourseProject_SmartManager
             return HashCode.Combine(Title, Priority);
         }
     }
-
 }

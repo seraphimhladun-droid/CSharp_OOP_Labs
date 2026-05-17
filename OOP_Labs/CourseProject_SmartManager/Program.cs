@@ -69,6 +69,18 @@ namespace CourseProject_SmartManager
             Console.WriteLine($"Завдання '{taskA.Title}' займе {taskA.EstimatedHours} годин.");
             Console.WriteLine($"Завдання '{taskB.Title}' займе {taskB.EstimatedHours} годин.");
 
+            // --- ДОДАТКОВА ПЕРЕВІРКА (Множення, Ділення, Унарні +/-) ---
+            Console.WriteLine("\n--- ТЕСТУВАННЯ ДОДАТКОВИХ ОПЕРАТОРІВ (*, /, унарний -) ---");
+            taskA = taskA * 2; // Множення (збільшили час удвічі)
+            Console.WriteLine($"Після множення (*2) завдання '{taskA.Title}' займе {taskA.EstimatedHours} годин.");
+
+            taskA = taskA / 2; // Ділення (повернули як було)
+            Console.WriteLine($"Після ділення (/2) час повернувся до {taskA.EstimatedHours} годин.");
+
+            taskB = -taskB; // Унарний мінус (повне обнулення часу за нашою логікою)
+            Console.WriteLine($"Після унарного мінуса (-taskB) час завдання '{taskB.Title}' дорівнює {taskB.EstimatedHours} годин.");
+
+
             Console.WriteLine("\n--- ТЕСТУВАННЯ ОПЕРАТОРІВ ПОРІВНЯННЯ (>, ==) ---");
 
             if (taskA > taskB)
@@ -84,7 +96,7 @@ namespace CourseProject_SmartManager
             }
 
             // =========================================================
-            // ФІНАЛЬНА ЗУПИНКА ПРОГРАМИ (має бути в самому кінці)
+            // ФІНАЛЬНА ЗУПИНКА ПРОГРАМИ 
             // =========================================================
             Console.WriteLine("\n=====================================");
             Console.WriteLine("Фініш імітації");
