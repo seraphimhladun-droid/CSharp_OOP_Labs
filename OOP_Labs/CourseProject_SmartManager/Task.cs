@@ -174,4 +174,55 @@ namespace CourseProject_SmartManager
             return HashCode.Combine(Title, Priority);
         }
     }
+    // =====================================================================
+    // ПОХІДНІ КЛАСИ (Спадкоємці) 
+    // =====================================================================
+
+    // Клас для термінових завдань (має дедлайн)
+    public class UrgentTask : Task
+    {
+        public DateTime Deadline { get; set; }
+
+        // Виклик конструктора базового класу через base(...)
+        public UrgentTask(string title, string priority, DateTime deadline) : base(title, priority)
+        {
+            Deadline = deadline;
+        }
+
+        // Реалізація обов'язкового абстрактного методу
+        public override string GetTaskType()
+        {
+            return "Термінове завдання";
+        }
+
+        // Перевизначення (override) віртуального методу виводу
+        public override void PrintInfo()
+        {
+            base.PrintInfo(); // Спочатку викликаємо базовий друк (статус, назва, час)
+            Console.WriteLine($"   --> Увага! Дедлайн: {Deadline.ToShortDateString()}"); // Потім дописуємо своє
+        }
+    }
+
+    // Клас для регулярних завдань
+    public class RoutineTask : Task
+    {
+        public string Frequency { get; set; } // Наприклад: "Щодня", "Щотижня"
+
+        // Виклик конструктора базового класу
+        public RoutineTask(string title, string priority, string frequency) : base(title, priority)
+        {
+            Frequency = frequency;
+        }
+
+        public override string GetTaskType()
+        {
+            return "Регулярне завдання";
+        }
+
+        public override void PrintInfo()
+        {
+            base.PrintInfo();
+            Console.WriteLine($"   --> Повторення: {Frequency}");
+        }
+    }
 }
