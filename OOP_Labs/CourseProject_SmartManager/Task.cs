@@ -201,6 +201,15 @@ namespace CourseProject_SmartManager
             base.PrintInfo(); // Спочатку викликаємо базовий друк (статус, назва, час)
             Console.WriteLine($"   --> Увага! Дедлайн: {Deadline.ToShortDateString()}"); // Потім дописуємо своє
         }
+        public int DaysLeft()
+        {
+            // Рахуємо різницю між дедлайном і поточним часом
+            TimeSpan difference = Deadline - DateTime.Now;
+
+            // Якщо дедлайн ще не пройшов (більше 0 днів), повертаємо кількість днів.
+            // Якщо вже прострочено, повертаємо 0.
+            return difference.Days > 0 ? difference.Days : 0;
+        }
     }
 
     // Клас для регулярних завдань
