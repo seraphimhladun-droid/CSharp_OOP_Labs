@@ -6,7 +6,8 @@ namespace CourseProject_SmartManager
     {
         public string Title { get; set; }
         public string Priority { get; set; }
-        public bool IsCompleted { get; set; } 
+        public bool IsCompleted { get; set; }
+        public int EstimatedHours { get; set; } = 0; // Час на виконання (в годинах)
 
         public Task(string title, string priority)
         {
@@ -57,5 +58,71 @@ namespace CourseProject_SmartManager
         {
             return t.IsCompleted == false;
         }
+        // ================= ВЕРСІЯ 4: Бінарні оператори та Порівняння =================
+
+        // 1. Бінарні оператори (+ та -)
+        // Дозволяють додавати або віднімати години роботи для завдання
+        public static Task operator +(Task t, int hours)
+        {
+            t.EstimatedHours += hours;
+            return t; // Повертаємо оновлене завдання
+        }
+
+        public static Task operator -(Task t, int hours)
+        {
+            t.EstimatedHours -= hours;
+            if (t.EstimatedHours < 0) t.EstimatedHours = 0; // Захист: час не може бути від'ємним
+            return t;
+        }
+
+        // 2. Оператори порівняння розміру (>, <, >=, <=)
+        // Порівнюємо завдання за тим, скільки годин вони займають
+        public static bool operator >(Task t1, Task t2)
+        {
+            return t1.EstimatedHours > t2.EstimatedHours;
+        }
+
+        public static bool operator <(Task t1, Task t2)
+        {
+            return t1.EstimatedHours < t2.EstimatedHours;
+        }
+
+        public static bool operator >=(Task t1, Task t2)
+        {
+            return t1.EstimatedHours >= t2.EstimatedHours;
+        }
+
+        public static bool operator <=(Task t1, Task t2)
+        {
+            return t1.EstimatedHours <= t2.EstimatedHours;
+        }
+
+        // 3. Оператори рівності (== та !=)
+        // Вважаємо завдання однаковими, якщо в них збігаються назва та пріоритет
+        public static bool operator ==(Task t1, Task t2)
+        {
+            // Технічна перевірка, щоб програма не зламалася, якщо одне із завдань порожнє (null)
+            if (ReferenceEquals(t1, t2)) return true;
+            if (t1 is null || t2 is null) return false;
+
+            return t1.Title == t2.Title && t1.Priority == t2.Priority;
+        }
+
+        public static bool operator !=(Task t1, Task t2)
+        {
+            return !(t1 == t2);
+        }
+
+        // C# вимагає обов'язково додати ці два методи, якщо ми перевантажили == та !=
+        public override bool Equals(object obj)
+        {
+            return obj is Task task && this == task;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Title, Priority);
+        }
     }
+
 }

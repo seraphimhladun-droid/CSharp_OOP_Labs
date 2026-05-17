@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO; //  Підключаємо бібліотеку для роботи з файлами
+using System.IO; // Підключаємо бібліотеку для роботи з файлами
 
 namespace CourseProject_SmartManager
 {
@@ -54,10 +54,38 @@ namespace CourseProject_SmartManager
             }
             else
             {
-                // Якщо файл не знайдено (наприклад, забули поставити Copy if newer)
+                // Якщо файл не знайдено 
                 Console.WriteLine($"[Помилка]: Файл '{filePath}' не знайдено! Перевірте налаштування Properties.");
             }
 
+            // --- ТЕСТУВАННЯ БІНАРНИХ ОПЕРАТОРІВ ТА ПОРІВНЯННЯ ---
+            Console.WriteLine("\n--- ТЕСТУВАННЯ БІНАРНИХ ОПЕРАТОРІВ (+, -) ---");
+            Task taskA = new Task("Написати код", "Високий");
+            Task taskB = new Task("Протестувати код", "Середній");
+
+            // додаємо години прямо до об'єкта через математичний плюс!
+            taskA = taskA + 5; // Виділяємо 5 годин
+            taskB = taskB + 2; // Виділяємо 2 години
+            Console.WriteLine($"Завдання '{taskA.Title}' займе {taskA.EstimatedHours} годин.");
+            Console.WriteLine($"Завдання '{taskB.Title}' займе {taskB.EstimatedHours} годин.");
+
+            Console.WriteLine("\n--- ТЕСТУВАННЯ ОПЕРАТОРІВ ПОРІВНЯННЯ (>, ==) ---");
+
+            if (taskA > taskB)
+            {
+                Console.WriteLine($"Завдання '{taskA.Title}' займає БІЛЬШЕ часу, ніж '{taskB.Title}'. (Спрацював оператор >)");
+            }
+
+            // Перевіряємо рівність
+            Task taskC = new Task("Написати код", "Високий");
+            if (taskA == taskC)
+            {
+                Console.WriteLine($"Завдання taskA та taskC ІДЕНТИЧНІ за назвою і пріоритетом. (Спрацював оператор ==)");
+            }
+
+            // =========================================================
+            // ФІНАЛЬНА ЗУПИНКА ПРОГРАМИ (має бути в самому кінці)
+            // =========================================================
             Console.WriteLine("\n=====================================");
             Console.WriteLine("Фініш імітації");
             Console.ReadLine();
