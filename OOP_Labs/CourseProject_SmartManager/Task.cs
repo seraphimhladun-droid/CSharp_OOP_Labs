@@ -11,7 +11,7 @@ namespace CourseProject_SmartManager
         void CompleteTask();
         bool IsDone();
     }
-    public class Task : IPrintable, ICompletable
+    public abstract class Task : IPrintable, ICompletable
     {
         public string Title { get; set; }
         public string Priority { get; set; }
@@ -34,7 +34,8 @@ namespace CourseProject_SmartManager
         {
             return IsCompleted;
         }
-        public void PrintInfo()
+        public abstract string GetTaskType();
+        public virtual void PrintInfo()
         {
             // Використовуємо тернарний оператор , щоб красиво показати статус
             string status = IsCompleted ? "[Виконано]" : "[В процесі]";
