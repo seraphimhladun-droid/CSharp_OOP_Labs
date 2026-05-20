@@ -1,0 +1,20 @@
+{
+  "TaskTypeUrgent": "Urgent Task",
+  "TaskTypeRoutine": "Routine Task",
+  "StatusCompleted": "[Done]",
+  "StatusInProgress": "[In Progress]",
+  "MenuFinish": "Simulation finished",
+  "ErrorFileNotFound": "[Error]: File not found!",
+  "Priority": "Priority",
+  "Hours": "Hours",
+  "DeadlineText": "   --> Warning! Deadline:",
+  "FrequencyText": "   --> Repeat:",
+  "StudentInfo": "Student Name: Hladun Serafym Serhiiovych\nCourse: 1, Group: IPZ-12\nVariant: 25 (Smart Manager)",
+  "LabHeader": "Version 6: Preparation (Localization)",
+  "FileFound": "[File System]: Found file",
+  "FileNotFound": "[Error]: File not found! Check Properties settings.",
+  "MathTestingHeader": "--- MATH AND OPERATORS TESTING ---",
+  "PolymorphismHeader": "--- ALL TASKS OUTPUT (POLYMORPHISM) ---",
+  "DaysLeftText": "days left:",
+  "MenuFinish": "Simulation finished"
+}

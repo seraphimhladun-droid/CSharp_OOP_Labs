@@ -37,9 +37,24 @@ namespace CourseProject_SmartManager
         public abstract string GetTaskType();
         public virtual void PrintInfo()
         {
-            // Використовуємо тернарний оператор , щоб красиво показати статус
-            string status = IsCompleted ? "[Виконано]" : "[В процесі]";
-            Console.WriteLine($"{status} Завдання: '{Title}' | Пріоритет: {Priority} | Годин: {EstimatedHours}");
+            string status; // Створюємо змінну для статусу
+
+            // Класична перевірка: якщо виконано, беремо один переклад, якщо ні — інший
+            if (IsCompleted == true)
+            {
+                status = LocalizationManager.GetString("StatusCompleted");
+            }
+            else
+            {
+                status = LocalizationManager.GetString("StatusInProgress");
+            }
+
+            // Отримуємо підписи для колонок зі словника
+            string priorityLabel = LocalizationManager.GetString("Priority");
+            string hoursLabel = LocalizationManager.GetString("Hours");
+
+            // Друкуємо результат. Замість слова "Завдання" викликаємо GetTaskType()
+            Console.WriteLine($"{status} {GetTaskType()}: '{Title}' | {priorityLabel}: {Priority} | {hoursLabel}: {EstimatedHours}");
         }
 
         // ================= Перевантаження унарних операторів =================
@@ -192,14 +207,14 @@ namespace CourseProject_SmartManager
         // Реалізація обов'язкового абстрактного методу
         public override string GetTaskType()
         {
-            return "Термінове завдання";
+            return LocalizationManager.GetString("TaskTypeUrgent");
         }
 
         // Перевизначення (override) віртуального методу виводу
         public override void PrintInfo()
         {
-            base.PrintInfo(); // Спочатку викликаємо базовий друк (статус, назва, час)
-            Console.WriteLine($"   --> Увага! Дедлайн: {Deadline.ToShortDateString()}"); // Потім дописуємо своє
+            base.PrintInfo(); // Викликаємо базовий друк
+            Console.WriteLine($"{LocalizationManager.GetString("DeadlineText")} {Deadline.ToShortDateString()}");
         }
         public int DaysLeft()
         {
@@ -225,13 +240,13 @@ namespace CourseProject_SmartManager
 
         public override string GetTaskType()
         {
-            return "Регулярне завдання";
+            return LocalizationManager.GetString("TaskTypeRoutine");
         }
 
         public override void PrintInfo()
         {
-            base.PrintInfo();
-            Console.WriteLine($"   --> Повторення: {Frequency}");
+            base.PrintInfo(); // Викликаємо базовий друк
+            Console.WriteLine($"{LocalizationManager.GetString("FrequencyText")} {Frequency}");
         }
     }
 }

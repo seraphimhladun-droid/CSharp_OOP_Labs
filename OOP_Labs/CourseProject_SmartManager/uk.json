@@ -1,0 +1,20 @@
+{
+  "TaskTypeUrgent": "Термінове завдання",
+  "TaskTypeRoutine": "Регулярне завдання",
+  "StatusCompleted": "[Виконано]",
+  "StatusInProgress": "[В процесі]",
+  "MenuFinish": "Фініш імітації",
+  "ErrorFileNotFound": "[Помилка]: Файл не знайдено!",
+  "Priority": "Пріоритет",
+  "Hours": "Годин",
+  "DeadlineText": "   --> Увага! Дедлайн:",
+  "FrequencyText": "   --> Повторення:",
+  "StudentInfo": "ПІБ студента: Гладун Серафим Сергійович\nКурс: 1, Група: ІПЗ-12\nВаріант завдання: 25 (Smart Manager)",
+  "LabHeader": "Версія 6: Підготовка (Локалізація)",
+  "FileFound": "[Файлова система]: Знайдено файл",
+  "FileNotFound": "[Помилка]: Файл не знайдено! Перевірте налаштування Properties.",
+  "MathTestingHeader": "--- ТЕСТУВАННЯ МАТЕМАТИКИ ТА ОПЕРАТОРІВ ---",
+  "PolymorphismHeader": "--- ВИВІД УСІХ ЗАВДАНЬ (ПОЛІМОРФІЗМ) ---",
+  "DaysLeftText": "залишилось днів:",
+  "MenuFinish": "Фініш імітації"
+}
